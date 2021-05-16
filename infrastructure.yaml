@@ -1,0 +1,88 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: "AWS::Serverless-2016-10-31"
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+
+Resources:
+  DefaultLambda:
+    Type: AWS::Serverless::Function
+    DependsOn: LambdaLogGroup
+    Properties:
+      FunctionName: !Ref AWS::StackName
+      CodeUri: dist/pets.zip # different
+      Runtime:  nodejs14.x
+      Timeout: 10
+      MemorySize: 1024
+      Handler: main.handler # different
+      Role: !GetAtt LambdaFunctionRole.Arn
+      Environment:
+        Variables:
+          DATABASE_NAME: !Ref Database
+          ENVIRONMENT: !Ref Environment
+
+  LambdaFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: !Sub "${AWS::StackName}-lambda-role"
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:*
+                Resource:
+                  - "*"
+
+  HttpApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: !Sub ${AWS::StackName}
+      Description: Example Http Api For Pet Service
+      ProtocolType: HTTP
+      Target: !Sub
+        - arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations
+        - lambdaArn: !GetAtt DefaultLambda.Arn
+
+  LambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref DefaultLambda
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/$default"
+
+  LambdaLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${AWS::StackName}"
+      RetentionInDays: 30
+
+  Database:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${AWS::StackName}-database"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: ppId
+          AttributeType: S
+        - AttributeName: psId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: ppId
+          KeyType: HASH
+        - AttributeName: psId
+          KeyType: RANGE

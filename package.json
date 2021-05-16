@@ -1,0 +1,26 @@
+{
+  "name": "pet-service-new",
+  "version": "1.0.0",
+  "description": "New version of the pet service",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -rf node_modules && rm -rf dist",
+    "webpack": "webpack",
+    "zip": "cd dist && zip -r pets.zip *",
+    "build": "npm i && webpack && npm run zip"
+  },
+  "dependencies": {
+    "fp-ts": "^2.8.3",
+    "fp-ts-std": "^0.8.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.72",
+    "aws-sdk": "^2.764.0",
+    "ts-loader": "^5.3.3",
+    "typescript": "^4.1.2",
+    "webpack": "^5.3.0",
+    "webpack-cli": "^4.1.0"
+  },
+  "author": "Sam Van Overmeire",
+  "license": "ISC"
+}

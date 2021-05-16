@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "es2017",
+      "esnext"
+    ],
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "sourceMap": true,
+    "target": "es2017",
+    "outDir": "dist",
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictBindCallApply": true
+  },
+  "exclude": [
+    "node_modules",
+    "__tests__",
+    "dist"
+  ]
+}
