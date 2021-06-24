@@ -3,6 +3,15 @@ export type RetrievePetRequest = {
     clientId: string,
 };
 
+export type AddPetRequest = {
+    id: string,
+    clientId: string,
+    name: string,
+    age: number,
+    cuteness: string,
+    type: string,
+};
+
 /* errors and responses */
 
 export type Response = {

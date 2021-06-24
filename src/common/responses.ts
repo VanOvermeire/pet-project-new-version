@@ -7,6 +7,12 @@ export const okResponse = (body: string): Response => {
     }
 };
 
+export const createdResponse = (): Response => {
+    return {
+        statusCode: 201,
+    }
+};
+
 export const badRequestResponse = (message: string): Response => {
     return {
         statusCode: 400,
