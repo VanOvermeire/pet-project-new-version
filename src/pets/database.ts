@@ -7,7 +7,7 @@ import {pipe} from "fp-ts/function";
 import {get, post} from "../common/gateway";
 import {notFound, serverError} from "../common/errors";
 
-const PETS_ID_PREFIX = 'P';
+const PETS_ID_PREFIX = 'P'; // could move to constants - but does rest of code have any business knowing about this?
 
 // probably useful for common section in a more generic way
 const buildPetGet = (request: RetrievePetRequest) => ({
@@ -44,9 +44,8 @@ export const retrieveFromDatabase = (request: RetrievePetRequest) =>
         TE.map(res => res.Item)
     );
 
-export const putInDatabase = (request: AddPetRequest) => {
-    return pipe(
+export const putInDatabase = (request: AddPetRequest) =>
+    pipe(
         buildPetPost(request),
         (params) => TE.tryCatch(() => post(params), serverError),
-    )
-}
+    );
