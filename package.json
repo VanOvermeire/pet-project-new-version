@@ -10,7 +10,7 @@
     "build": "npm i && webpack && npm run zip"
   },
   "dependencies": {
-    "fp-ts": "^2.8.3",
+    "fp-ts": "2.8.3",
     "fp-ts-std": "^0.8.0"
   },
   "devDependencies": {

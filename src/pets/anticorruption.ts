@@ -7,7 +7,7 @@ import {clientError} from "../common/errors";
 // probably useful for common section
 const inValid = (value: string) => !value.trim();
 // probably useful for common section
-const checkQueryString = (event: APIGatewayProxyEventV2) =>
+const checkQueryString = (event: APIGatewayProxyEventV2): E.Either<Errors, APIGatewayProxyEventV2> =>
     Object.entries(event.queryStringParameters).some(entry => inValid(entry[0]) || inValid(entry[1])) ?
         E.left(clientError('Query string validation error')) : E.right(event);
 // probably useful for common section
@@ -34,17 +34,15 @@ const parseEventFromBody = (parsedBody: E.Json): AddPetRequest => {
     };
 }
 
-export const preparePetGet = (event: APIGatewayProxyEventV2) => {
-    return pipe(
+export const preparePetGet = (event: APIGatewayProxyEventV2): E.Either<Errors, RetrievePetRequest> =>
+    pipe(
         checkQueryString(event),
         E.map(parseEvent),
     );
-};
 
-export const preparePetPost = (event: APIGatewayProxyEventV2): E.Either<Errors, AddPetRequest> => {
-    return pipe(
+export const preparePetPost = (event: APIGatewayProxyEventV2): E.Either<Errors, AddPetRequest> =>
+    pipe(
         E.parseJSON(event.body, () => clientError('Invalid json body')),
         E.chain(checkBody),
         E.map(parseEventFromBody),
-    )
-};
+    );
