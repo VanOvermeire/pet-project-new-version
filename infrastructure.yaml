@@ -1,5 +1,5 @@
-AWSTemplateFormatVersion: "2010-09-09"
-Transform: "AWS::Serverless-2016-10-31"
+AWSTemplateFormatVersion: 2010-09-09
+Transform: AWS::Serverless-2016-10-31
 
 Parameters:
   Environment:
@@ -12,11 +12,11 @@ Resources:
     DependsOn: LambdaLogGroup
     Properties:
       FunctionName: !Ref AWS::StackName
-      CodeUri: dist/pets.zip # different
+      CodeUri: dist/pets.zip
       Runtime:  nodejs14.x
       Timeout: 10
       MemorySize: 1024
-      Handler: main.handler # different
+      Handler: main.handler
       Role: !GetAtt LambdaFunctionRole.Arn
       Environment:
         Variables:
