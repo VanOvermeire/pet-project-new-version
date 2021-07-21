@@ -2,10 +2,10 @@ import {DocumentClient} from "aws-sdk/lib/dynamodb/document_client";
 import GetItemOutput = DocumentClient.GetItemOutput;
 import {APIGatewayProxyEventV2} from "aws-lambda/trigger/api-gateway-proxy";
 import * as E from "fp-ts/Either";
-import {Errors} from "./types";
-import {clientError, notFound} from "./errors";
 import * as TE from "fp-ts/TaskEither";
 import * as A from "fp-ts/Array";
+import {Errors} from "./types";
+import {clientError, notFound} from "./errors";
 
 export const inValid = (value: string) => !value.trim();
 

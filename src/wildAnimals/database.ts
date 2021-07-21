@@ -1,11 +1,11 @@
-import {AddWildAnimalRequest, RetrieveWildAnimalRequest} from "../common/types";
+import {DocumentClient} from "aws-sdk/lib/dynamodb/document_client";
+import UpdateItemInput = DocumentClient.UpdateItemInput;
 import {pipe} from "fp-ts/function";
 import * as TE from "fp-ts/TaskEither";
 import {getParallel, post, update} from "../common/gateway";
 import {parallelCheckEmpty} from "../common/validation";
 import {serverError} from "../common/errors";
-import {DocumentClient} from "aws-sdk/lib/dynamodb/document_client";
-import UpdateItemInput = DocumentClient.UpdateItemInput;
+import {AddWildAnimalRequest, RetrieveWildAnimalRequest} from "../common/types";
 
 // instead of getting database name from environment, should be injected (probably with IO)
 

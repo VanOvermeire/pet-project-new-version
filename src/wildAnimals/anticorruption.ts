@@ -1,7 +1,7 @@
 import {APIGatewayProxyEventV2} from "aws-lambda/trigger/api-gateway-proxy";
 import * as E from "fp-ts/Either";
-import { AddWildAnimalRequest, Errors, RetrieveWildAnimalRequest } from "../common/types";
 import {pipe} from "fp-ts/function";
+import { AddWildAnimalRequest, Errors, RetrieveWildAnimalRequest } from "../common/types";
 import {checkBody, checkQueryString} from "../common/validation";
 import {clientError} from "../common/errors";
 

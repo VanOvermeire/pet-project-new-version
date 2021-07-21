@@ -1,6 +1,6 @@
 import * as TE from 'fp-ts/TaskEither';
-import {AddPetRequest, RetrievePetRequest} from "../common/types";
 import {pipe} from "fp-ts/function";
+import {AddPetRequest, RetrievePetRequest} from "../common/types";
 import {get, post} from "../common/gateway";
 import {serverError} from "../common/errors";
 import {checkEmptyTE} from "../common/validation";

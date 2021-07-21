@@ -4,11 +4,11 @@ import GetItemInput = DocumentClient.GetItemInput;
 import PutItemInput = DocumentClient.PutItemInput;
 import GetItemOutput = DocumentClient.GetItemOutput;
 import PutItemOutput = DocumentClient.PutItemOutput;
+import UpdateItemInput = DocumentClient.UpdateItemInput;
 import * as A from "fp-ts/Array";
 import * as TE from "fp-ts/TaskEither";
 import {serverError} from "./errors";
 import {Errors} from "./types";
-import UpdateItemInput = DocumentClient.UpdateItemInput;
 
 const client = new DynamoDB.DocumentClient({region: 'eu-west-1'});
 

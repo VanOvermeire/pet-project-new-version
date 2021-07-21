@@ -1,5 +1,5 @@
-import {GET_METHOD, POST_METHOD} from "./constants";
 import {APIGatewayProxyEventV2} from "aws-lambda/trigger/api-gateway-proxy";
+import {GET_METHOD, POST_METHOD} from "./constants";
 import {getPet, postPet} from "./pets/entrypoint";
 import {getWildAnimal, postWildAnimal} from "./wildAnimals/entrypoint";
 

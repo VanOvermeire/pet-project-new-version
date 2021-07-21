@@ -1,8 +1,8 @@
 import * as E from 'fp-ts/Either'
 import {APIGatewayProxyEventV2} from "aws-lambda/trigger/api-gateway-proxy";
-import {AddPetRequest, Errors, RetrievePetRequest} from "../common/types";
 import {pipe} from "fp-ts/function";
 import {clientError} from "../common/errors";
+import {AddPetRequest, Errors, RetrievePetRequest} from "../common/types";
 import {checkBody, checkQueryString} from "../common/validation";
 
 const parseEvent = (event: APIGatewayProxyEventV2): RetrievePetRequest => ({
