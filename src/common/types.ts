@@ -12,6 +12,17 @@ export type AddPetRequest = {
     type: string,
 };
 
+export type RetrieveWildAnimalRequest = {
+    id: string,
+    type: string,
+};
+
+export type AddWildAnimalRequest = {
+    id: string,
+    type: string,
+    age: number,
+};
+
 /* errors and responses */
 
 export type Response = {

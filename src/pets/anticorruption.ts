@@ -3,18 +3,7 @@ import {APIGatewayProxyEventV2} from "aws-lambda/trigger/api-gateway-proxy";
 import {AddPetRequest, Errors, RetrievePetRequest} from "../common/types";
 import {pipe} from "fp-ts/function";
 import {clientError} from "../common/errors";
-
-// probably useful for common section
-const inValid = (value: string) => !value.trim();
-// probably useful for common section
-const checkQueryString = (event: APIGatewayProxyEventV2): E.Either<Errors, APIGatewayProxyEventV2> =>
-    Object.entries(event.queryStringParameters).some(entry => inValid(entry[0]) || inValid(entry[1])) ?
-        E.left(clientError('Query string validation error')) : E.right(event);
-// probably useful for common section
-const checkBody = (parsedBody: E.Json) => {
-    return Object.keys(parsedBody).some(inValid) ?
-        E.left(clientError('Body contained empty key')) : E.right(parsedBody);
-}
+import {checkBody, checkQueryString} from "../common/validation";
 
 const parseEvent = (event: APIGatewayProxyEventV2): RetrievePetRequest => ({
     id: event.queryStringParameters.id,
@@ -32,7 +21,7 @@ const parseEventFromBody = (parsedBody: E.Json): AddPetRequest => {
         cuteness: records.cuteness as string,
         type: records.type as string,
     };
-}
+};
 
 export const preparePetGet = (event: APIGatewayProxyEventV2): E.Either<Errors, RetrievePetRequest> =>
     pipe(

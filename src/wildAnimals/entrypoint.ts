@@ -1,15 +1,15 @@
-import * as TE from 'fp-ts/TaskEither';
-import * as T from 'fp-ts/Task'
 import {APIGatewayProxyEventV2} from "aws-lambda/trigger/api-gateway-proxy";
 import {pipe} from "fp-ts/function";
-import {preparePetGet, preparePetPost} from "./anticorruption";
-import {putInDatabase, retrieveFromDatabase} from "./database";
+import * as TE from "fp-ts/TaskEither";
+import * as T from "fp-ts/Task";
+import {prepareWildAnimalGet, prepareWildAnimalPost} from "./anticorruption";
 import {createdResponse, handleError, okResponse} from "../common/responses";
+import {putInDatabase, retrieveFromDatabase} from "./database";
 import {Response} from "../common/types";
 
-export const getPet = async (event: APIGatewayProxyEventV2): Promise<Response> => {
+export const getWildAnimal = async (event: APIGatewayProxyEventV2): Promise<Response> => {
     return pipe(
-        preparePetGet(event),
+        prepareWildAnimalGet(event),
         p => TE.fromEither(p),
         TE.chain(retrieveFromDatabase),
         TE.map(JSON.stringify),
@@ -18,9 +18,9 @@ export const getPet = async (event: APIGatewayProxyEventV2): Promise<Response> =
     )();
 };
 
-export const postPet = async (event: APIGatewayProxyEventV2): Promise<Response> => {
+export const postWildAnimal = async (event: APIGatewayProxyEventV2): Promise<Response> => {
     return pipe(
-        preparePetPost(event),
+        prepareWildAnimalPost(event),
         p => TE.fromEither(p),
         TE.chain(putInDatabase),
         TE.bimap(handleError, createdResponse),

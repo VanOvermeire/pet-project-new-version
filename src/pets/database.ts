@@ -1,24 +1,24 @@
-import {DocumentClient} from "aws-sdk/lib/dynamodb/document_client";
-import GetItemOutput = DocumentClient.GetItemOutput;
-import * as E from 'fp-ts/Either';
 import * as TE from 'fp-ts/TaskEither';
-import {AddPetRequest, Errors, RetrievePetRequest} from "../common/types";
+import {AddPetRequest, RetrievePetRequest} from "../common/types";
 import {pipe} from "fp-ts/function";
 import {get, post} from "../common/gateway";
-import {notFound, serverError} from "../common/errors";
+import {serverError} from "../common/errors";
+import {checkEmptyTE} from "../common/validation";
+
+// instead of getting database name from environment, should be injected (probably with IO_
 
 const PETS_ID_PREFIX = 'P'; // could move to constants - but does rest of code have any business knowing about this?
 
-// probably useful for common section in a more generic way
-const buildPetGet = (request: RetrievePetRequest) => ({
-    TableName: process.env.DATABASE_NAME, // not great
+// might be made more generic way
+const buildGet = (request: RetrievePetRequest) => ({
+    TableName: process.env.DATABASE_NAME,
     Key: {
         ppId: `${PETS_ID_PREFIX}#${request.clientId}`,
         psId: request.id,
     },
 });
 
-const buildPetPost = (request: AddPetRequest) => ({
+const buildPost = (request: AddPetRequest) => ({
     TableName: process.env.DATABASE_NAME,
     Item: {
         ppId: `${PETS_ID_PREFIX}#${request.clientId}`,
@@ -32,20 +32,16 @@ const buildPetPost = (request: AddPetRequest) => ({
     }
 });
 
-// probably useful for common section
-const checkIfEmpty = (item: GetItemOutput): E.Either<Errors, GetItemOutput> => item.Item ? E.right(item) : E.left(notFound());
-const checkIfEmptyTE = (res: GetItemOutput) => TE.fromEither(checkIfEmpty(res));
-
 export const retrieveFromDatabase = (request: RetrievePetRequest) =>
     pipe(
-        buildPetGet(request),
+        buildGet(request),
         (params) => TE.tryCatch(() => get(params), serverError),
-        TE.chain(checkIfEmptyTE),
+        TE.chain(checkEmptyTE),
         TE.map(res => res.Item)
     );
 
 export const putInDatabase = (request: AddPetRequest) =>
     pipe(
-        buildPetPost(request),
+        buildPost(request),
         (params) => TE.tryCatch(() => post(params), serverError),
     );
