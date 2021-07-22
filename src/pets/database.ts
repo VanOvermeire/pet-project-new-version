@@ -4,10 +4,9 @@ import {AddPetRequest, RetrievePetRequest} from "../common/types";
 import {get, post} from "../common/gateway";
 import {serverError} from "../common/errors";
 import {checkEmptyTE} from "../common/validation";
+import {PETS_ID_PREFIX} from "../constants";
 
-// instead of getting database name from environment, should be injected (probably with IO_
-
-const PETS_ID_PREFIX = 'P'; // could move to constants - but does rest of code have any business knowing about this?
+// instead of getting database name from environment, should be injected (probably with IO)
 
 // might be made more generic way
 const buildGet = (request: RetrievePetRequest) => ({

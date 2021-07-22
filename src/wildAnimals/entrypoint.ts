@@ -7,8 +7,8 @@ import {createdResponse, handleError, okResponse} from "../common/responses";
 import {putInDatabase, retrieveFromDatabase} from "./database";
 import {Response} from "../common/types";
 
-export const getWildAnimal = async (event: APIGatewayProxyEventV2): Promise<Response> => {
-    return pipe(
+export const getWildAnimal = async (event: APIGatewayProxyEventV2): Promise<Response> =>
+    pipe(
         prepareWildAnimalGet(event),
         p => TE.fromEither(p),
         TE.chain(retrieveFromDatabase),
@@ -16,14 +16,12 @@ export const getWildAnimal = async (event: APIGatewayProxyEventV2): Promise<Resp
         TE.bimap(handleError, okResponse),
         TE.getOrElse(T.of)
     )();
-};
 
-export const postWildAnimal = async (event: APIGatewayProxyEventV2): Promise<Response> => {
-    return pipe(
+export const postWildAnimal = async (event: APIGatewayProxyEventV2): Promise<Response> =>
+    pipe(
         prepareWildAnimalPost(event),
         p => TE.fromEither(p),
         TE.chain(putInDatabase),
         TE.bimap(handleError, createdResponse),
         TE.getOrElse(T.of)
     )();
-};

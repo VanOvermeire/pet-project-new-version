@@ -6,11 +6,9 @@ import {getParallel, post, update} from "../common/gateway";
 import {parallelCheckEmpty} from "../common/validation";
 import {serverError} from "../common/errors";
 import {AddWildAnimalRequest, RetrieveWildAnimalRequest} from "../common/types";
+import {COUNTER_PREFIX, WILD_ANIMALS_PREFIX} from "../constants";
 
 // instead of getting database name from environment, should be injected (probably with IO)
-
-const WILD_ANIMALS_PREFIX = 'W'; // could move to constants - but does rest of code have any business knowing about this?
-const COUNTER_PREFIX = 'C';
 
 const buildGet = (request: RetrieveWildAnimalRequest) => {
     return {
