@@ -10,7 +10,7 @@ import {Response} from "../common/types";
 export const getPet = async (event: APIGatewayProxyEventV2): Promise<Response> =>
     pipe(
         preparePetGet(event),
-        p => TE.fromEither(p),
+        TE.fromEither,
         TE.chain(retrieveFromDatabase),
         TE.map(JSON.stringify),
         TE.bimap(handleError, okResponse),
@@ -20,7 +20,7 @@ export const getPet = async (event: APIGatewayProxyEventV2): Promise<Response> =
 export const postPet = async (event: APIGatewayProxyEventV2): Promise<Response> =>
     pipe(
         preparePetPost(event),
-        p => TE.fromEither(p),
+        TE.fromEither,
         TE.chain(putInDatabase),
         TE.bimap(handleError, createdResponse),
         TE.getOrElse(T.of)

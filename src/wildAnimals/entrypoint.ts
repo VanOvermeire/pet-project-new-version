@@ -10,7 +10,7 @@ import {Response} from "../common/types";
 export const getWildAnimal = async (event: APIGatewayProxyEventV2): Promise<Response> =>
     pipe(
         prepareWildAnimalGet(event),
-        p => TE.fromEither(p),
+        TE.fromEither,
         TE.chain(retrieveFromDatabase),
         TE.map(JSON.stringify),
         TE.bimap(handleError, okResponse),
@@ -20,7 +20,7 @@ export const getWildAnimal = async (event: APIGatewayProxyEventV2): Promise<Resp
 export const postWildAnimal = async (event: APIGatewayProxyEventV2): Promise<Response> =>
     pipe(
         prepareWildAnimalPost(event),
-        p => TE.fromEither(p),
+        TE.fromEither,
         TE.chain(putInDatabase),
         TE.bimap(handleError, createdResponse),
         TE.getOrElse(T.of)
