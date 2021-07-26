@@ -1,7 +1,7 @@
 import * as TE from 'fp-ts/TaskEither';
 import {pipe} from "fp-ts/function";
 import {AddPetRequest, RetrievePetRequest} from "../common/types";
-import {get, post} from "../common/gateway";
+import {get, getItem, post} from "../common/gateway";
 import {serverError} from "../common/errors";
 import {checkEmptyTE} from "../common/validation";
 import {PETS_ID_PREFIX} from "../constants";
@@ -36,7 +36,7 @@ export const retrieveFromDatabase = (request: RetrievePetRequest) =>
         buildGet(request),
         (params) => TE.tryCatch(() => get(params), serverError),
         TE.chain(checkEmptyTE),
-        TE.map(res => res.Item)
+        TE.map(getItem)
     );
 
 export const putInDatabase = (request: AddPetRequest) =>

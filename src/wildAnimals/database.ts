@@ -2,7 +2,7 @@ import {DocumentClient} from "aws-sdk/lib/dynamodb/document_client";
 import UpdateItemInput = DocumentClient.UpdateItemInput;
 import {pipe} from "fp-ts/function";
 import * as TE from "fp-ts/TaskEither";
-import {getParallel, post, update} from "../common/gateway";
+import {getItem, getParallel, post, update} from "../common/gateway";
 import {parallelCheckEmpty} from "../common/validation";
 import {serverError} from "../common/errors";
 import {AddWildAnimalRequest, RetrieveWildAnimalRequest} from "../common/types";
@@ -69,7 +69,7 @@ export const retrieveFromDatabase = (request: RetrieveWildAnimalRequest) => {
         [buildGet(request), buildCounterGet(request)],
         requests => getParallel(requests),
         TE.chain(parallelCheckEmpty),
-        TE.map(results => results.map(r => r.Item))
+        TE.map(results => results.map(getItem))
     );
 };
 

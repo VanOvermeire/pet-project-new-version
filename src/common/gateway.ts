@@ -29,3 +29,5 @@ export const postParallel = (inputs: PutItemInput[]): TE.TaskEither<Errors, PutI
         inputs.map(input => TE.tryCatch(() => post(input), serverError))
     );
 };
+
+export const getItem = (v: GetItemOutput) => v.Item;
