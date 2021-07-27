@@ -1,47 +1,47 @@
 export type RetrievePetRequest = {
-    id: string,
-    clientId: string,
+    readonly id: string,
+    readonly clientId: string,
 };
 
 export type AddPetRequest = {
-    id: string,
-    clientId: string,
-    name: string,
-    age: number,
-    cuteness: string,
-    type: string,
+    readonly id: string,
+    readonly clientId: string,
+    readonly name: string,
+    readonly age: number,
+    readonly cuteness: string,
+    readonly type: string,
 };
 
 export type RetrieveWildAnimalRequest = {
-    id: string,
-    type: string,
+    readonly id: string,
+    readonly type: string,
 };
 
 export type AddWildAnimalRequest = {
-    id: string,
-    type: string,
-    age: number,
+    readonly id: string,
+    readonly type: string,
+    readonly age: number,
 };
 
 /* errors and responses */
 
 export type Response = {
-    statusCode: number,
-    body?: string,
+    readonly statusCode: number,
+    readonly body?: string,
 }
 
 export type ClientError = {
-    type: 'ClientError',
-    message: string,
+    readonly type: 'ClientError',
+    readonly message: string,
 }
 
 export type ServerError = {
-    type: 'ServerError',
-    message: string,
+    readonly type: 'ServerError',
+    readonly message: string,
 }
 
 export type NotFoundError = {
-    type: 'NotFoundError',
+    readonly type: 'NotFoundError',
 }
 
 export type Errors = ClientError | ServerError | NotFoundError;
